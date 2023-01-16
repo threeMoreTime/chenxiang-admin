@@ -15,8 +15,8 @@ module.exports = {
     proxyTable: devEnv.OPEN_PROXY === false ? {} : {
       '/tao': {
         // target:'http://192.168.1.2:4001/tao',
-        // target: 'http://localhost:8888/tao',
-        target: 'https://zhongchenkjshops.zhongchenkj.com/tao',
+        target: 'http://localhost:8888/tao',
+        // target: 'https://zhongchenkjshops.zhongchenkj.com/tao',
         changeOrigin: true,
         pathRewrite: {
           '^/tao': ''

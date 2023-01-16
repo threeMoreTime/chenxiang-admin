@@ -72,6 +72,14 @@
         size="mini"
         type="primary"
         icon="document"
+        @click="testBonus"
+      >测试今日分红
+      </el-button>
+      <el-button
+        style="margin-left: 15px"
+        size="mini"
+        type="primary"
+        icon="document"
         @click="findGradeBounsDayList"
       >查询
       </el-button>
@@ -273,6 +281,16 @@ export default {
     handleCurrentChange (val) {
       this.page = val
       this.findGradeBounsDayList()
+    },
+    /* 测试分红*/
+    testBonus() {
+      this.$http({
+        url: this.$http.adornUrl2('/grade/test'),
+        method: 'get',
+        params: this.$http.adornParams({ }),
+      }).then(({ }) => {
+        this.refreshWaitProcessData()
+      }) 
     },
     /* 查询分红记录 */
     findGradeBounsDayList () {

@@ -57,12 +57,6 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <div style="display:inline-flex">
           <el-card dis shadow="hover" >
-            小毛驴中奖总数:{{userMsgCountData.isShowAwardMsgCount||0}}
-          </el-card>
-          <el-card dis shadow="hover" >
-            虚拟账号总数:{{userMsgCountData.isVirtualCount||0}}
-          </el-card>
-          <el-card dis shadow="hover" >
             分红总数:{{userMsgCountData.isBonusDayCount||0}}
           </el-card>
         </div>
@@ -131,30 +125,14 @@
             <span>{{ scope.row.orderJifen | numFilter }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="isShowAwardMsg" label="小毛驴中奖信息">
+        <el-table-column prop="warehouseReceipt" label="仓单">
           <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.isShowAwardMsg"
-              @change="changeIsShowAwardMsg(scope.row.isShowAwardMsg, scope.row.id)"
-              :active-value="1"
-              :inactive-value="0"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-            >
-            </el-switch>
+            <span>{{ scope.row.warehouseReceipt | numFilter}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="isVirtual " label="虚拟账号">
+        <el-table-column prop="exchange" label="兑换券">
           <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.isVirtual"
-              @change="changIsVirtual(scope.row.isVirtual, scope.row.id)"
-              :active-value="1"
-              :inactive-value="0"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-            >
-            </el-switch>
+            <span>{{ scope.row.exchange | numFilter }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="isVirtual " label="日分红">
@@ -164,19 +142,6 @@
               @change="changIsNoBonusDay(scope.row.isNoBonusDay, scope.row.id)"
               :active-value="0"
               :inactive-value="1"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-            >
-            </el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column prop="bankIdentifyStatus " label="银行卡实名认证">
-          <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.bankIdentifyStatus"
-              @change="changBankIdentifyStatus(scope.row, scope.row.id)"
-              :active-value="1"
-              :inactive-value="0"
               active-color="#13ce66"
               inactive-color="#ff4949"
             >
@@ -361,22 +326,6 @@ export default {
         this.dataSelect()
       })
     },
-    // 修改虚拟账号状态
-    changIsVirtual(val, id) {
-      this.$http({
-        url: this.$http.adornUrl2(`/grade/updateIsVistrual/${id}`),
-        method: 'post',
-        data: this.$http.adornData({})
-      }).then(({
-        data
-      }) => {
-        this.$message({
-          message: '操作成功',
-          type: 'success',
-        })
-        this.dataSelect()
-      })
-    },
     // 修改日分红状态
     changIsNoBonusDay(val, id) {
       this.$http({
@@ -391,66 +340,6 @@ export default {
           type: 'success',
         })
         this.dataSelect()
-      })
-    },
-    // 修改银行卡状态
-    changBankIdentifyStatus(row, id) {
-      this.$confirm(`确定更改认证状态?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$http({
-          url: this.$http.adornUrl2(`/grade/updateBankIdentifyStatus/${id}`),
-          method: 'post',
-          params: this.$http.adornData({})
-        }).then(({
-          data
-        }) => {
-          if (data.status != 0) {
-            this.$message({
-              message: data.msg||'修改失败',
-              type: 'error',
-              onClose: () => {
-                row.bankIdentifyStatus = !row.bankIdentifyStatus
-              }
-            })
-          } else {
-            this.$message({
-              message: '操作成功',
-              type: 'success',
-              onClose: () => {
-                this.dataSelect()
-              }
-            }) 
-          }
-          
-        })
-      }).catch(() => { })
-
-    },
-     // 小毛驴中奖信息
-     changeIsShowAwardMsg(val, id) {
-      this.$http({
-        url: this.$http.adornUrl2(`/grade/updateIsShowAwardMsg/${id}`),
-        method: 'post',
-        data: this.$http.adornData({})
-      }).then(({
-        data
-      }) => {
-        if (data.status == 0) {
-          this.$message({
-            message: '操作成功',
-            type: 'success',
-          })
-        } else {
-          this.$message({
-            message: data.msg||'操作失败',
-            type: 'error',
-          })
-        }
-        this.dataSelect() 
-        
       })
     },
     // 修改等级弹窗

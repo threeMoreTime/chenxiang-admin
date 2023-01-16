@@ -197,25 +197,8 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="6">
-          <span>关联销售等级：</span>
-          <el-select
-            v-model="relRankCode"
-            class="margin15"
-            placeholder="请选择套餐"
-            style="width: 200px"
-          >
-            <el-option
-              v-for="(item, index) in packageList"
-              :key="item.rankCode"
-              :label="item.rankName"
-              :value="item.rankCode"
-            >
-            </el-option>
-          </el-select>
-        </el-col>
         <el-col :span="6" style="margin-top: 20px">
-            <span>关联套餐2</span>
+            <span>关联制度</span>
             <el-radio-group v-model="isGradeGoods">
               <el-radio :label="1">是</el-radio>
               <el-radio :label="0">否</el-radio>
@@ -903,7 +886,6 @@ export default {
       descrition: '',
       curRowIndex: null,
       quillOption: quillConfig,
-      packageList: [],// 销售等级信息
       relRankCode: null,// 关联销售等级Id
       isGradeGoods:null,// 是否套餐2商品
     }
@@ -1447,26 +1429,13 @@ export default {
         this.typeDatas = returnData
       })
     },
-    /* 获取分红配置 */
-    findConfigList () {
-      this.tableDataLoading = true
-      this.$http({
-        url: this.$http.adornUrl2('/rank/findConfigList'),
-        method: 'get'
-      }).then(({ data }) => {
-        if (data && data.status === 0) {
-          this.tableDataLoading = false
-          this.packageList = data.data
-        }
-      })
-    }
+   
   },
   mounted () {
     this.init()
     this.dataSelect()
     this.specifSelect()
     this.brandSelect()
-    this.findConfigList()
   },
 
 }

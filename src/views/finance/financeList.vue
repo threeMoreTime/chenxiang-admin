@@ -84,10 +84,11 @@
         </el-table-column>
         <el-table-column prop="refund" label="拒绝原因" width="220">
         </el-table-column>
-        <el-table-column prop="notifyStatus" label="银行卡提现审核" width="220">
+        <el-table-column prop="notifyStatus" label="银行卡信息" width="220">
           <template v-if="scope.row.classify==4" slot-scope="scope">
-            <span>状态：{{scope.row.notifyStatus }}</span><br/>
-            <span>时间：{{scope.row.notifyTime && parseDateTime(scope.row.notifyTime) }}</span>
+            <span>姓名：{{scope.row.bankUserName }}</span><br/>
+            <span>开户行：{{scope.row.bankName}}</span><br/>
+            <span>卡号：{{scope.row.bankCode}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="createAt" label="申请时间" width="170">

@@ -9,12 +9,6 @@
       </span>
       <GradeBonusDay :refreshWaitProcessData="()=>{this.findWaitProcessData()}" v-if="activeName=='gradeBonusDay'" :key="gradeBonusDayRefreshKey" />
     </el-tab-pane>
-    <el-tab-pane label="工资考核"  name="gradeMonthAward">
-      <span slot="label">
-        工资考核<el-badge v-if="waitProcessData.waitGradeCheckMonth>0" :value="waitProcessData.waitGradeCheckMonth"></el-badge>
-      </span>
-      <GradeMonthAward  :refreshWaitProcessData="()=>{this.findWaitProcessData()}" v-if="activeName=='gradeMonthAward'" :key="gradeMonthAwardRefreshKey" />
-    </el-tab-pane>
     <el-tab-pane label="分红配置" name="gradeConfig">
       <GradeConfig v-if="activeName=='gradeConfig'" :key="configRefreshKey" />
     </el-tab-pane>
@@ -27,6 +21,9 @@
     <el-tab-pane label="团队结构" name="findTeamUserList">
       <findTeamUserList v-if="activeName=='findTeamUserList'" :key="findTeamUserListRefreshKey" :gradeConfigList="gradeConfigList" />
     </el-tab-pane>
+    <el-tab-pane label="树苗管理" name="UserTreeList">
+      <UserTreeList v-if="activeName=='UserTreeList'" :key="UserTreeListRefreshKey"  />
+    </el-tab-pane>
 
   </el-tabs>
 </template>
@@ -38,7 +35,7 @@ import GradeBonusDay from './components/GradeBonusDay.vue'
 import GradeUserInfo from './components/GradeUserInfo.vue'
 import GradeUpdateLog from './components/GradeUpdateLog.vue'
 import findTeamUserList from './components/findTeamUserList.vue'
-import GradeMonthAward from './components/GradeMonthAward.vue'
+import UserTreeList from './components/UserTreeList.vue'
 export default {
   data () {
     return {
@@ -50,13 +47,20 @@ export default {
       gradeUpdateLogRefreshKey:5,
       gradeMonthAwardRefreshKey:6,
       findTeamUserListRefreshKey:7,
+      UserTreeListRefreshKey:8,
       gradeConfigList:[],
       waitProcessData:{}
     }
   },
   components: {
-    GradeConfig, GradeBonusLog,GradeBonusDay,GradeUserInfo,GradeUpdateLog,findTeamUserList,GradeMonthAward
-  },
+    GradeConfig,
+    GradeBonusLog,
+    GradeBonusDay,
+    GradeUserInfo,
+    GradeUpdateLog,
+    findTeamUserList,
+    UserTreeList
+},
   created() {
     this.findGradeConfigList();
     this.findWaitProcessData();
@@ -93,8 +97,8 @@ export default {
       if (tab._props.label == '团队结构') {
         this.findTeamUserListRefreshKey = new Date().getTime()
       };
-      if (tab._props.label == '工资考核') {
-        this.gradeMonthAwardRefreshKey = new Date().getTime()
+      if (tab._props.label == '树苗管理') {
+        this.UserTreeListRefreshKey = new Date().getTime()
       };
     },
     // 获取待处理总数
