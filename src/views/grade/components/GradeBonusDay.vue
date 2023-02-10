@@ -1,22 +1,6 @@
 <template>
   <div>
     <div style="display: inline-block">
-      <span>分红类型：</span>
-        <el-select
-          v-model="selectBonusLogType"
-          placeholder="请选择类型"
-          style="width: 150px"
-          @change="refreshData()"
-        >
-          <el-option label="全部" value=""></el-option>
-          <el-option
-            v-for="(value,key) in grdeBonusDayTypeData"
-            :key="key"
-            :label="value"
-            :value="key"
-          >
-          </el-option> </el-select
-        >&nbsp;&nbsp;&nbsp;&nbsp;
       <span>开始时间：</span>
       <el-date-picker
         style="width: 160px; margin-left: 10px"
@@ -135,8 +119,6 @@
         <template slot-scope="scope">
           {{ scope.row.status | getStatusName }}
         </template>
-      </el-table-column>
-      <el-table-column prop="bonusDayPool" label="奖金池" width="120">
       </el-table-column>
       <el-table-column prop="bonusDayPool" label="编辑" width="200">
         <template slot-scope="scope">

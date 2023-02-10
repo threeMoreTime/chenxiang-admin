@@ -3,7 +3,7 @@
     <div class="site-content__wrapper">
       <div class="site-content">
         <div class="login-main">
-          <h3 class="login-title">大仓电商管理系统</h3>
+          <h3 class="login-title">智创联盟管理系统</h3>
           <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()"
             status-icon>
             <el-form-item prop="userName">

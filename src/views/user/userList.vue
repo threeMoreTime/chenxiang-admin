@@ -106,7 +106,7 @@
             <span v-if="!scope.row.gender">未知</span>
           </template>
         </el-table-column>
-        <el-table-column prop="relationId" label="会员编号" width="100">
+        <el-table-column prop="relationId" label="邀请码" width="100">
           <template slot-scope="scope">
             <span>{{
               scope.row.isInvitation === 0
@@ -128,8 +128,8 @@
             >
           </template>
         </el-table-column>
-        <el-table-column prop="invitationCode" label="邀请码" width="150">
-        </el-table-column>
+        <!-- <el-table-column prop="invitationCode" label="邀请码" width="150"> -->
+        <!-- </el-table-column> -->
         <el-table-column prop="grade" label="等级" width="150">
           <template slot-scope="scope">
             <span>{{ scope.row.grade * 100 }}%</span>

@@ -328,12 +328,27 @@
         </el-table-column>
         <el-table-column prop="money" label="充值金额" width="100">
         </el-table-column>
+        <el-table-column label="支付凭证" >
+          <template slot-scope="scope">
+              <el-image
+                ref="voucherImg"
+                style="width: 100px; height: 100px"
+                :src="scope.row.voucherImg"
+                :preview-src-list="[scope.row.voucherImg]"
+                fit="cover"
+              />
+             
+          </template>
+        </el-table-column>
+        <el-table-column label="拒绝原因" prop="content" ></el-table-column>
         <el-table-column prop="userId" label="编号" width="100">
         </el-table-column>
         <el-table-column label="分类" width="120">
           <template slot-scope="scope">
             <span style="color: #4f9dec;cursor: pointer;" v-if="scope.row.classify == 1">微信</span>
             <span style="color: #4f9dec;cursor: pointer;" v-if="scope.row.classify == 2">支付宝</span>
+            <span style="color: #4f9dec;cursor: pointer;" v-if="scope.row.classify == 3">上传凭证</span>
+
           </template>
         </el-table-column>
         <el-table-column label="状态" width="120">
@@ -347,6 +362,16 @@
         </el-table-column>
         <el-table-column prop="payTime" label="支付时间">
         </el-table-column>
+        <el-table-column prop="edit" label="审核">
+          <template slot-scope="scope" v-if="scope.row.classify==3">
+            <el-button size="mini" type="primary"  @click="agreeVoucher(scope.row)">
+              转账
+            </el-button>
+            <el-button size="mini" type="primary" @click="refuseVoucher(scope.row)">
+              拒绝
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <div style="text-align: center;margin-top: 10px;">
         <el-pagination @size-change="handleSizeChange1" @current-change="handleCurrentChange1"
@@ -355,6 +380,19 @@
         </el-pagination>
       </div>
     </el-tab-pane>
+     <!-- 充值拒绝弹框 -->
+     <el-dialog title="拒绝" :visible.sync="dialogPayVisible" center>
+        <el-form :model="payForm">
+          <el-form-item label="拒绝原因：" :label-width="formLabelWidth">
+            <el-input v-model="payForm.content" type="textarea" rows="4" placeholder="请输入拒绝原因" style="width:65%;">
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogPayVisible = false">取 消</el-button>
+          <el-button type="primary" @click="handleRefuseVoucher()">确 定</el-button>
+        </div>
+      </el-dialog>
     <!-- 用户钱包 -->
     <el-tab-pane label="用户钱包" name="fifth">
       <div style="display: inline-block">
@@ -588,6 +626,14 @@ export default {
       endDate:null,
       type:'',
       /* 用户钱包--end */
+      /* 充值审核--start */
+      payForm:{
+        id:'',
+        content:''
+      },
+      dialogPayVisible: false,
+       /* 充值审核--end */
+
     }
 
   },
@@ -1102,6 +1148,102 @@ export default {
       this.page = val
       this.findMoneyDetailsList()
     },
+    // 同意充值
+    // 拒绝
+    agreeVoucher(row) {
+      if (row.state  !=0) {
+        this.$message({
+          message: '已转账，请勿重复操作！',
+          type: 'error',
+          duration: 2500
+        })
+        return
+      } 
+
+      this.$confirm(`确定转账?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http({
+          url: this.$http.adornUrl2(`/cash/agreeVoucher/${row.id}`),
+          method: 'get',
+          data: this.$http.adornData({})
+        }).then(({ data }) => {
+          if (data.status == 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.rechargeSelect
+                ()
+              }
+            })
+            return
+          } else {
+            this.$message({
+              message: data.msg,
+              type: 'error',
+              duration: 2500
+            })
+            return
+          }
+        })
+      })
+    },
+    refuseVoucher(row) {
+      // 拒绝
+      if (row.state !=0) {
+        this.$message({
+          message: '已拒绝，请勿重复操作！',
+          type: 'error',
+          duration: 2500
+        })
+      } else {
+        this.dialogPayVisible = true
+        this.payForm.id = row.id
+      }
+    },
+    handleRefuseVoucher(row) {
+      if (this.payForm.content == '') {
+        this.$message({
+          message: '请输入拒绝原因！',
+          type: 'error',
+          duration: 1500
+        })
+        return
+      }
+      this.$http({
+        url: this.$http.adornUrl2(`/cash/refuseVoucher/${this.payForm.id}?content=${this.payForm.content}`),
+        method: 'get',
+        data: this.$http.adornData({})
+      }).then(({ data }) => {
+        if (data.status == 0) {
+          this.dialogPayVisible = false
+          this.$message({
+            message: '操作成功',
+            type: 'success',
+            duration: 1500,
+            onClose: () => {
+              this.form.content = ''
+              this.rechargeSelect()
+            }
+          })
+          return
+        }
+        this.dialogFormVisible = false
+        this.$message({
+          message: data.msg,
+          type: 'error',
+          duration: 2500,
+          onClose: () => {
+            this.form.content = ''
+          }
+        })
+        return
+      })
+    }
   },
   mounted() {
     this.dataSelect()

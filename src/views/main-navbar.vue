@@ -2,7 +2,7 @@
   <nav class="site-navbar" :class="'site-navbar--' + navbarLayoutType">
     <div class="site-navbar__header">
       <h1 class="site-navbar__brand">
-        <a class="site-navbar__brand-lg" href="javascript:;">大仓电商管理系统</a>
+        <a class="site-navbar__brand-lg" href="javascript:;">智创联盟管理系统</a>
         <a class="site-navbar__brand-mini" href="javascript:;">
           <img src="~@/assets/img/avatar.png" style="width:30px;height:30px; border-radius: 50%;">
         </a>

@@ -16,7 +16,7 @@ module.exports = {
       '/tao': {
         // target:'http://192.168.1.2:4001/tao',
         target: 'http://localhost:8888/tao',
-        // target: 'https://zhongchenkjshops.zhongchenkj.com/tao',
+        // target: 'https://zhichuang.jianheguoji.com/tao',
         changeOrigin: true,
         pathRewrite: {
           '^/tao': ''
@@ -24,7 +24,7 @@ module.exports = {
       },
       '/wxapi': {
         // target:'http://192.168.1.2:4001/wxapi',
-        target: 'https://zhongchenkjshops.zhongchenkj.com/wxapi',
+        target: 'https://zhichuang.jianheguoji.com/wxapi',
         changeOrigin: true,
         pathRewrite: {
           '^/wxapi': ''
@@ -32,7 +32,7 @@ module.exports = {
       },
       '/api': {
         // target:'http://192.168.1.2:4001/api',
-        target: 'https://zhongchenkjshops.zhongchenkj.com/api',
+        target: 'https://zhichuang.jianheguoji.com/api',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
